@@ -76,3 +76,62 @@ sub request_signed {
 }
 
 1;
+
+__END__
+
+=head1 NAME
+
+Net::LastFM - A simple interface to the Last.fm API
+
+=head1 SYNOPSIS
+
+  my $lastfm = Net::LastFM->new(
+      api_key    => 'XXX',
+      api_secret => 'YYY',
+  );
+  my $data = $lastfm->request_signed(
+      method => 'user.getRecentTracks',
+      user   => 'lglb',
+  );
+
+=head1 DESCRIPTION
+
+The module provides a simple interface to the Last.fm API. To use
+this module, you must first sign up at L<http://www.last.fm/api>
+to receive an API key and secret.
+
+You can then make requests on the API - most of the requests
+are signed. You pass in a hash of paramters and a data structure
+mirroring the response is returned.
+
+This module confesses if there is an error.
+
+=head1 METHODS
+
+=head2 request
+
+This makes an unsigned request:
+
+  my $data = $lastfm->request( method => 'auth.gettoken' );
+
+=head2 request_signed
+
+This makes a signed request:
+
+  my $data = $lastfm->request_signed(
+      method => 'user.getRecentTracks',
+      user   => 'lglb',
+  );
+
+=head1 AUTHOR
+
+Leon Brocard <acme@astray.com>
+
+=head1 COPYRIGHT
+
+Copyright (C) 2008, Leon Brocard.
+
+=head1 LICENSE
+
+This module is free software; you can redistribute it or 
+modify it under the same terms as Perl itself.
