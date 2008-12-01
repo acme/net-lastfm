@@ -46,14 +46,11 @@ sub request {
     }
 
     my $request = HTTP::Request->new( 'GET', $uri );
-    warn $request->as_string;
 
     my $response = $ua->request($request);
-    warn $response->as_string;
 
     my $data = XMLin( $response->content, ForceArray => 0, KeyAttr => [] );
-    use Data::Dumper;
-    warn Dumper $data;
+
     if ( $data->{status} eq 'ok' ) {
         return $data;
     } else {
@@ -74,8 +71,6 @@ sub request_signed {
     }
     $to_hash .= $self->api_secret;
     $conf{api_sig} = md5_hex($to_hash);
-
-    warn "will hash $to_hash";
 
     return $self->request(%conf);
 }
