@@ -6,7 +6,7 @@ WriteMakefile(
     NAME         => 'Net::LastFM',
     VERSION_FROM => 'lib/Net/LastFM.pm',
     AUTHOR       => 'Leon Brocard <acme@astray.com>',
-    ABSTRACT     => 'Call the Last.fm API',
+    ABSTRACT     => 'A simple interface to the Last.fm API',
     LICENSE      => 'perl',
     PREREQ_PM    => {
         'Digest::MD5'               => '0',
