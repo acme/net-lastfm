@@ -2,9 +2,9 @@ package Net::LastFM;
 use Moose;
 use MooseX::StrictConstructor;
 use Digest::MD5 qw(md5_hex);
+use JSON::XS::VersionOneAndTwo;
 use LWP::UserAgent;
 use URI::QueryParam;
-use XML::Simple qw(:strict);
 our $VERSION = '0.32';
 
 has 'api_key' => (
@@ -44,19 +44,19 @@ sub request {
         my $value = $conf{$key};
         $uri->query_param( $key, $value );
     }
+    $uri->query_param( 'format', 'json' );
 
     my $request = HTTP::Request->new( 'GET', $uri );
 
     my $response = $ua->request($request);
+    my $data     = from_json( $response->content );
 
-    my $data = XMLin( $response->content, ForceArray => 0, KeyAttr => [] );
-
-    if ( $data->{status} eq 'ok' ) {
-        return $data;
+    if ( defined $data->{error} ) {
+        my $code    = $data->{error};
+        my $message = $data->{message};
+        confess "$code: $message";
     } else {
-        my $code    = $data->{error}->{code};
-        my $content = $data->{error}->{content};
-        confess "$code: $content";
+        return $data;
     }
 }
 

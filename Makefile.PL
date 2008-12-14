@@ -9,12 +9,13 @@ WriteMakefile(
     ABSTRACT     => 'A simple interface to the Last.fm API',
     LICENSE      => 'perl',
     PREREQ_PM    => {
-        'Digest::MD5'               => '0',
-        'LWP::UserAgent'            => '0',
-        'Moose'                     => '0',
-        'MooseX::StrictConstructor' => '0',
-        'URI::QueryParam'           => '0',
-        'XML::Simple'               => '0',
+        'Digest::MD5'                => '0',
+        'JSON::XS::VersionOneAndTwo' => '0',
+        'LWP::UserAgent'             => '0',
+        'Moose'                      => '0',
+        'MooseX::StrictConstructor'  => '0',
+        'URI::QueryParam'            => '0',
+
     }
 );
 
