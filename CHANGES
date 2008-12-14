@@ -1,6 +1,6 @@
 Revision history for Perl module Net::LastFM:
 
-0.33
+0.33 Sun Dec 14 15:33:26 GMT 2008
      - switch to using the JSON version of the API
 
 0.32 Mon Dec  1 21:31:28 GMT 2008

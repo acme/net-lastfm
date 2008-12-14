@@ -5,7 +5,7 @@ use Digest::MD5 qw(md5_hex);
 use JSON::XS::VersionOneAndTwo;
 use LWP::UserAgent;
 use URI::QueryParam;
-our $VERSION = '0.32';
+our $VERSION = '0.33';
 
 has 'api_key' => (
     is       => 'rw',
