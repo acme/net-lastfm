@@ -1,6 +1,6 @@
 Revision history for Perl module Net::LastFM:
 
-0.34
+0.34 Tue Apr 21 08:04:54 BST 2009
      - expose create_http_request and create_http_request_signed
        methods for integrating into other HTTP frameworks
        (suggested by Anatoly Sharifulin)
