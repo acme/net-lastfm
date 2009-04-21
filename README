@@ -36,11 +36,28 @@ METHODS
           user   => 'lglb',
       );
 
+  create_http_request
+    If you want to integrate this module into another HTTP framework, this
+    method will simple create an unsigned HTTP::Request object:
+
+      my $http_request = $lastfm->create_http_request(
+          method => 'auth.gettoken'
+      );
+
+  create_http_request_signed
+    If you want to integrate this module into another HTTP framework, this
+    method will simple create a signed HTTP::Request object:
+
+      my $http_request = $lastfm->create_http_request_signed(
+          method => 'user.getRecentTracks',
+          user   => 'lglb',
+      );
+
 AUTHOR
     Leon Brocard <acme@astray.com>
 
 COPYRIGHT
-    Copyright (C) 2008, Leon Brocard.
+    Copyright (C) 2008-9, Leon Brocard.
 
 LICENSE
     This module is free software; you can redistribute it or modify it under

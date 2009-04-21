@@ -33,9 +33,8 @@ has 'ua' => (
 
 my $ROOT = 'http://ws.audioscrobbler.com/2.0/';
 
-sub request {
+sub create_http_request {
     my ( $self, %conf ) = @_;
-    my $ua = $self->ua;
 
     $conf{api_key} = $self->api_key;
     my $uri = URI->new('http://ws.audioscrobbler.com/2.0/');
@@ -46,21 +45,10 @@ sub request {
     }
     $uri->query_param( 'format', 'json' );
 
-    my $request = HTTP::Request->new( 'GET', $uri );
-
-    my $response = $ua->request($request);
-    my $data     = from_json( $response->content );
-
-    if ( defined $data->{error} ) {
-        my $code    = $data->{error};
-        my $message = $data->{message};
-        confess "$code: $message";
-    } else {
-        return $data;
-    }
+    return HTTP::Request->new( 'GET', $uri );
 }
 
-sub request_signed {
+sub create_http_request_signed {
     my ( $self, %conf ) = @_;
     $conf{api_key} = $self->api_key;
 
@@ -72,7 +60,35 @@ sub request_signed {
     $to_hash .= $self->api_secret;
     $conf{api_sig} = md5_hex($to_hash);
 
-    return $self->request(%conf);
+    return $self->create_http_request(%conf);
+}
+
+sub request {
+    my ( $self, %conf ) = @_;
+    my $request = $self->create_http_request(%conf);
+    return $self->_make_request($request);
+}
+
+sub request_signed {
+    my ( $self, %conf ) = @_;
+    my $request = $self->create_http_request_signed(%conf);
+    return $self->_make_request($request);
+}
+
+sub _make_request {
+    my ( $self, $request ) = @_;
+    my $ua = $self->ua;
+
+    my $response = $ua->request($request);
+    my $data     = from_json( $response->content );
+
+    if ( defined $data->{error} ) {
+        my $code    = $data->{error};
+        my $message = $data->{message};
+        confess "$code: $message";
+    } else {
+        return $data;
+    }
 }
 
 1;
@@ -123,13 +139,32 @@ This makes a signed request:
       user   => 'lglb',
   );
 
+=head2 create_http_request
+
+If you want to integrate this module into another HTTP framework, this 
+method will simple create an unsigned L<HTTP::Request> object:
+
+  my $http_request = $lastfm->create_http_request(
+      method => 'auth.gettoken'
+  );
+
+=head2 create_http_request_signed
+
+If you want to integrate this module into another HTTP framework, this 
+method will simple create a signed L<HTTP::Request> object:
+
+  my $http_request = $lastfm->create_http_request_signed(
+      method => 'user.getRecentTracks',
+      user   => 'lglb',
+  );
+
 =head1 AUTHOR
 
 Leon Brocard <acme@astray.com>
 
 =head1 COPYRIGHT
 
-Copyright (C) 2008, Leon Brocard.
+Copyright (C) 2008-9, Leon Brocard.
 
 =head1 LICENSE
 
